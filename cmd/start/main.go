@@ -1,8 +1,8 @@
 package main
 
 import (
-	cdeklib "cdeklib/pkg/cdeklib"
 	"fmt"
+	cdeklib "github.com/savvax/cdeklib"
 )
 
 func main() {

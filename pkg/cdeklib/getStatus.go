@@ -8,6 +8,7 @@ import (
 )
 
 func (c *Client) GetStatus(orderID string) (status string, err error) {
+
 	baseURL, err := url.Parse(c.ApiURL)
 	if err != nil {
 		panic(err)
@@ -23,7 +24,7 @@ func (c *Client) GetStatus(orderID string) (status string, err error) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+c.Token)
+	req.Header.Set("Authorization", "Bearer "+c.Auth.AccessToken)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) CreateOrder(addrFrom string, addrTo string, recipient Recipient, packages []Package, tariffCode int) (orderID string, err error) {
-
+	c.checkToken()
 	addrFromL := OrderLocation{
 		Address: addrFrom,
 	}
@@ -49,7 +49,7 @@ func (c *Client) CreateOrder(addrFrom string, addrTo string, recipient Recipient
 
 	// Устанавливаем необходимые заголовки
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+c.Token)
+	req.Header.Set("Authorization", "Bearer "+c.Auth.AccessToken)
 
 	// Отправляем запрос
 	client := &http.Client{}

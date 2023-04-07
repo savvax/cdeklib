@@ -43,7 +43,7 @@ func (c *Client) Calculate(fromLocation, toLocation LocationCalc, size Size) (st
 
 	// Set the request headers.
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set("Authorization", "Bearer "+c.Token)
+	request.Header.Set("Authorization", "Bearer "+c.Auth.AccessToken)
 
 	// Send the request to the CDEK API.
 	resp, err := http.DefaultClient.Do(request)

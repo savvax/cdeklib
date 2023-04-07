@@ -15,6 +15,8 @@ type Token struct {
 
 var token Token
 
+const timeBuffer = 30
+
 func (c *Client) GetAccessToken(apiURL, account, securePassword string) (string, error) {
 	apiResponse, err := GetAccessResponse(apiURL, account, securePassword)
 	if err != nil {
@@ -38,7 +40,7 @@ func (c *Client) checkToken() error {
 }
 
 func (c *Client) isTokenExpires() bool {
-	if token.ExpiresIn <= time.Now().Unix() {
+	if token.ExpiresIn-timeBuffer <= time.Now().Unix() {
 		return true
 	}
 	return false

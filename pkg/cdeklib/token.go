@@ -30,10 +30,11 @@ func (c *Client) GetAccessToken(apiURL, account, securePassword string) (string,
 	return apiResponse.AccessToken, nil
 }
 
-func (c *Client) checkToken() {
+func (c *Client) checkToken() error {
 	if c.isTokenExpires() {
-		c.refreshToken()
+		return c.refreshToken()
 	}
+	return nil
 }
 
 func (c *Client) isTokenExpires() bool {
@@ -43,7 +44,7 @@ func (c *Client) isTokenExpires() bool {
 	return false
 }
 
-func (c *Client) refreshToken() {
+func (c *Client) refreshToken() error {
 	if c.isTokenExpires() {
 		apiResponse, err := GetAccessResponse(c.ApiURL, c.Account, c.SecurePassword)
 		if err != nil {
@@ -56,16 +57,7 @@ func (c *Client) refreshToken() {
 		token.Scope = apiResponse.Scope
 		token.Jti = apiResponse.Jti
 
-		//fmt.Println("Токен обновлен")
+		return err
 	}
+	return nil
 }
-
-//func (c *Client) updateToken() {
-//	GetAccessResponse()
-//
-//	return &Token{	AccessToken: ,
-//		TokenType: ,
-//		ExpiresIn: ,
-//		Scope: ,
-//		Jti:  }
-//}

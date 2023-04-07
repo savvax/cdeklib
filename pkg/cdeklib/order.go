@@ -9,7 +9,10 @@ import (
 )
 
 func (c *Client) CreateOrder(addrFrom string, addrTo string, recipient Recipient, packages []Package, tariffCode int) (orderID string, err error) {
-	c.checkToken()
+	if err := c.checkToken(); err != nil {
+		return "", err
+	}
+
 	addrFromL := OrderLocation{
 		Address: addrFrom,
 	}

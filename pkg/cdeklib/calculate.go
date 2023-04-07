@@ -11,6 +11,10 @@ import (
 
 // Calculate returns an array of tariffs based on the given fromLocation, toLocation, and size.
 func (c *Client) Calculate(fromLocation, toLocation LocationCalc, size Size) (string, error) {
+	if err := c.checkToken(); err != nil {
+		return "", err
+	}
+
 	req := CalcRequest{
 		Type:         CdekType,
 		Date:         CdekDate,

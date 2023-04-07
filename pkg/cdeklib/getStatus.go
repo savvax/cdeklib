@@ -8,6 +8,9 @@ import (
 )
 
 func (c *Client) GetStatus(orderID string) (status string, err error) {
+	if err := c.checkToken(); err != nil {
+		return "", err
+	}
 
 	baseURL, err := url.Parse(c.ApiURL)
 	if err != nil {

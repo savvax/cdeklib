@@ -72,8 +72,6 @@ func main() {
 		},
 	}
 
-	//time.Sleep(12 * time.Minute)
-
 	orderID, err := client.CreateOrder(sendingAddress, deliveryAddress, recipient, packages, 233)
 	if err != nil {
 		fmt.Println(err)

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"main/pkg/cdeklib"
+	cdeklib "github.com/savvax/cdeklib"
 )
 
 func main() {

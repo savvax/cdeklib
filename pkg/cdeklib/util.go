@@ -18,8 +18,6 @@ func (c *Client) generalRequest(method string, endpoint string, bodyRequest io.R
 		return map[string]interface{}{}, err
 	}
 
-	//endpoint := endpoint
-
 	fullURL := baseURL.ResolveReference(&url.URL{Path: endpoint})
 
 	req, err := http.NewRequest(method, fullURL.String(), bodyRequest)

@@ -2,49 +2,48 @@ package cdeklib
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
-func (c *Client) generalRequest(method string, endpoint string, bodyRequest io.Reader) (map[string]interface{}, error) {
-	if err := c.checkToken(); err != nil {
-		return map[string]interface{}{}, err
+func (c *Client) generalRequest(method string, endpoint string, bodyRequest io.Reader) (result map[string]interface{}, err error) {
+	if err = c.checkToken(); err != nil {
+		return
 	}
 
 	baseURL, err := url.Parse(c.ApiURL)
 	if err != nil {
-		return map[string]interface{}{}, err
+		return
 	}
 
 	fullURL := baseURL.ResolveReference(&url.URL{Path: endpoint})
 
 	req, err := http.NewRequest(method, fullURL.String(), bodyRequest)
 	if err != nil {
-		return map[string]interface{}{}, err
+		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+c.Auth.AccessToken)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return map[string]interface{}{}, err
+		return
 	}
+
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return map[string]interface{}{}, err
+	err = unmarshalJSONResponse(resp.Body, &result)
+	return
+}
+
+func unmarshalJSONResponse(r io.Reader, v interface{}) error {
+	if r == nil {
+		return errors.New("reader is nil")
 	}
 
-	var jsonData map[string]interface{}
-	err = json.Unmarshal(body, &jsonData)
-	if err != nil {
-		return map[string]interface{}{}, err
-	}
-
-	return jsonData, nil
+	decoder := json.NewDecoder(r)
+	return decoder.Decode(v)
 }

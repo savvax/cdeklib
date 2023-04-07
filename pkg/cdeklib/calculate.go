@@ -26,14 +26,7 @@ func (c *Client) Calculate(fromLocation, toLocation LocationCalc, size Size) (st
 		return "", err
 	}
 
-	//baseURL, err := url.Parse(c.ApiURL)
-	//if err != nil {
-	//	panic(err)
-	//}
-
 	endpoint := "v2/calculator/tarifflist"
-
-	//fullURL := baseURL.ResolveReference(&url.URL{Path: endpoint})
 
 	jsonData, err := c.generalRequest("POST", endpoint, bytes.NewBuffer(requestBodyBytes))
 	if err != nil {
